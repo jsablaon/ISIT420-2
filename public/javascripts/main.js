@@ -1,17 +1,88 @@
 
-let movieArray = [];
+let orderArray = [];
+let storeEmployeeObjects = {
+    98053: [1,2,3,4],
+    98007: [5,6,7,8],
+    98077: [9,10,11,12],
+    98055: [13,14,15,16],
+    98011: [17,18,19,20],
+    98046: [21,22,23,24]
+};
 
-// define a constructor to create movie objects
-let MovieObject = function (pTitle, pYear, pGenre, pMan, pWoman, pURL) {
-    this.ID = Math.random().toString(16).slice(5)  // tiny chance could get duplicates!
-    this.Title = pTitle;
-    this.Year = pYear;
-    this.Genre = pGenre;  // action  comedy  drama  horrow scifi  musical  western
+// console.log(Object.keys(storeEmployeeObjects));
+// console.log(storeEmployeeObjects[98011]);
+let keys = Object.keys(storeEmployeeObjects);
+let randomStoreNumber = keys[keys.length * Math.random() << 0]
+// console.log(randomStoreNumber, "randomStoreNumber");
+let randomEmployeeId = storeEmployeeObjects[randomStoreNumber].length * Math.random() << 0;
+// console.log(randomEmployeeId, "randomEmployeeId")
+// console.log(storeEmployeeObjects[randomStoreNumber][randomEmployeeId], "storeEmployeeIds");
+
+
+// console.log(storeEmployeeObjects[keys[ keys.length * Math.random() << 0]]);
+
+// (98053 , 98007, 98077, 98055, 98011, 98046)
+
+// define a constructor to create order objects
+let OrderObject = function (pStoreId, pSalesPersonId, pCdId, pPricePaid, pDate) {
+    this.StoreID = pStoreId;
+    this.SalesPersonID = pSalesPersonId;
+    this.CdID = pCdId;
+    this.PricePaid = pPricePaid;
+    this.Date = pDate;
 }
+
+let newOrder = new OrderObject(randomStoreNumber, storeEmployeeObjects[randomStoreNumber][randomEmployeeId], 1,1, Date.now());
+console.log(newOrder, "newOrder");
+
+function generateRandomOrder(){
+    keys = Object.keys(storeEmployeeObjects);
+    randomStoreNumber = keys[keys.length * Math.random() << 0];
+    randomEmployeeId = storeEmployeeObjects[randomStoreNumber].length * Math.random() << 0;
+
+    newOrder = new OrderObject(randomStoreNumber, storeEmployeeObjects[randomStoreNumber][randomEmployeeId], 1,1, Date.now());
+}
+
+function createDisplay(){
+    generateRandomOrder();
+    console.log(newOrder.StoreID, newOrder.SalesPersonID, newOrder.CdID, newOrder.PricePaid, newOrder.Date, "logging new order object");
+
+    let divOrderList = document.getElementById("divOrderList");
+
+    divOrderList.innerHTML = `StoreID = ${newOrder.StoreID} \n
+                                SalesPersonID = ${newOrder.SalesPersonID} \n
+                                CdID = ${newOrder.CdID} \n
+                                PricePaid = ${newOrder.PricePaid} \n
+                                Date = ${newOrder.Date} \n`
+}
+
+function addOneToServer(){
+    fetch('/AddOrder', {
+        method: "POST",
+        body: JSON.stringify(newOrder),
+        headers: {"Content-type": "application/json; charset=UTF-8"}
+        })
+        .then(response => response.json()) 
+        .then(json => console.log(json)
+        )
+        .catch(err => console.log(err));
+}
+
 
 let selectedGenre = "not selected";
 
 document.addEventListener("DOMContentLoaded", function () {
+
+    // added by me
+    document.getElementById("buttonCreate").addEventListener("click", function (){
+        createDisplay();
+    });
+
+    document.getElementById("buttonAddOne").addEventListener("click", function (){
+        addOneToServer();
+    });
+
+    // end of my addition ======================================
 
     createList();
 
