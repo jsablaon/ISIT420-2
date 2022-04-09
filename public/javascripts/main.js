@@ -1,5 +1,5 @@
 
-let orderArray = [];
+// let orderArray = [];
 let storeEmployeeObjects = {
     98053: [1,2,3,4],
     98007: [5,6,7,8],
@@ -32,15 +32,34 @@ let OrderObject = function (pStoreId, pSalesPersonId, pCdId, pPricePaid, pDate) 
     this.Date = pDate;
 }
 
-let newOrder = new OrderObject(randomStoreNumber, storeEmployeeObjects[randomStoreNumber][randomEmployeeId], 1,1, Date.now());
+let initialDateTime = Date.now();
+
+let newOrder = new OrderObject(randomStoreNumber, storeEmployeeObjects[randomStoreNumber][randomEmployeeId], 1,1, initialDateTime);
 console.log(newOrder, "newOrder");
+
+// random CdID
+// (123456, 123654, 321456, 321654, 654123, 654321, 543216, 354126, 621453, 623451)
+let CdIDs = [123456, 123654, 321456, 321654, 654123, 654321, 543216, 354126, 621453, 623451];
+function getRandomCd(){
+    let randomIndex = getRandomIntInclusive(0, CdIDs.length-1);
+    console.log(randomIndex, "random index for cd");
+    return CdIDs[randomIndex];
+}
+
+function getRandomIntInclusive(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive
+}
+  
 
 function generateRandomOrder(){
     keys = Object.keys(storeEmployeeObjects);
     randomStoreNumber = keys[keys.length * Math.random() << 0];
     randomEmployeeId = storeEmployeeObjects[randomStoreNumber].length * Math.random() << 0;
 
-    newOrder = new OrderObject(randomStoreNumber, storeEmployeeObjects[randomStoreNumber][randomEmployeeId], 1,1, Date.now());
+    newOrder = new OrderObject(randomStoreNumber, storeEmployeeObjects[randomStoreNumber][randomEmployeeId], getRandomCd(), getRandomIntInclusive(5,15), initialDateTime);
+    initialDateTime = initialDateTime + getRandomIntInclusive(5000, 30000);
 }
 
 function createDisplay(){
@@ -57,6 +76,7 @@ function createDisplay(){
 }
 
 function addOneToServer(){
+    createDisplay();
     fetch('/AddOrder', {
         method: "POST",
         body: JSON.stringify(newOrder),
@@ -66,6 +86,13 @@ function addOneToServer(){
         .then(json => console.log(json)
         )
         .catch(err => console.log(err));
+}
+
+function add500ToServer(){
+    for (let i = 0; i < 500; i++) {
+        console.log(i + 1, "count of orders");
+        addOneToServer();
+    }
 }
 
 
@@ -81,6 +108,10 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("buttonAddOne").addEventListener("click", function (){
         addOneToServer();
     });
+
+    document.getElementById("buttonAdd500").addEventListener("click", function (){
+        add500ToServer();
+    })
 
     // end of my addition ======================================
 

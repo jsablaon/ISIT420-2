@@ -12,6 +12,31 @@ let ServerOrderObject = function (pStoreId, pSalesPersonId, pCdId, pPricePaid, p
   this.Date = pDate
 }
 
+// my file management code, embedded in an object
+fileManagerOrder  = {
+
+  // this will read a file and put the data in our movie array
+  // NOTE: both read and write files are synchonous, we really can't do anything
+  // useful until they are done.  If they were async, we would have to use call backs.
+  // functions really should take in the name of a file to be more generally useful
+  read: function() {
+    // has extra code to add 4 movies if and only if the file is empty
+    const stat = fs.statSync('ordersData.json');
+    if (stat.size !== 0) {                           
+    var rawdata = fs.readFileSync('ordersData.json'); // read disk file
+    ServerOrderArray = JSON.parse(rawdata);  // turn the file data into JSON format and overwrite our array
+    }
+    else {
+      fileManagerOrder.write();
+    }
+  },
+  
+  write: function() {
+    let data = JSON.stringify(ServerOrderArray);    // take our object data and make it writeable
+    fs.writeFileSync('ordersData.json', data);  // write it
+  },
+}
+
 // start by creating data so we don't have to type it in each time
 let ServerMovieArray = [];
 
@@ -85,10 +110,11 @@ router.post('/AddOrder', function(req, res) {
   const newOrder = req.body;  // get the object from the req object sent from browser
   let newOrderObject = new ServerOrderObject(newOrder.StoreID, newOrder.SalesPersonID, newOrder.CdID, newOrder.PricePaid, newOrder.Date);
   console.log(newOrderObject, "new order object");
-  ServerOrderArray = []; // clear array
+  // ServerOrderArray = []; // clear array
   console.log(`cleared server array ${ServerOrderArray.length}`)
   ServerOrderArray.push(newOrderObject);  // add it to our "DB"  (array)
   console.log(`added 1 to server array ${ServerOrderArray.length}`);
+  fileManagerOrder.write();
   // fileManager.write();
   // prepare a reply to the browser
   var response = {
