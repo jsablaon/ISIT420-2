@@ -149,6 +149,7 @@ function createOne(){
         const randomPrice = randomInt(5,15);
          var rt = randomInt(3000,5000);
         const randomDate =hourSM(date+rt);
+        newOrder = new OrderObject(randomStore, randomSPID, randomCD, randomPrice, randomDate);
           let divOrderList = document.getElementById("divOrderList");
           divOrderList.innerHTML = `StoreID = ${randomStore} <br> 
           SalesPersonID = ${randomSPID} <br> 
@@ -164,6 +165,7 @@ function createOne(){
       const randomPrice = randomInt(5,15);
       var rt = randomInt(3000,5000);
       const randomDate =hourSM(date+rt);
+      newOrder = new OrderObject(randomStore, randomSPID, randomCD, randomPrice, randomDate);
       let divOrderList = document.getElementById("divOrderList");
       divOrderList.innerHTML = `StoreID = ${randomStore} <br> 
       SalesPersonID = ${randomSPID} <br> 
@@ -179,6 +181,7 @@ function createOne(){
         const randomPrice = randomInt(5,15);
         var rt = randomInt(3000,5000);
         const randomDate =hourSM(date+rt);
+        newOrder = new OrderObject(randomStore, randomSPID, randomCD, randomPrice, randomDate);
         let divOrderList = document.getElementById("divOrderList");
         divOrderList.innerHTML = `StoreID = ${randomStore} <br> 
         SalesPersonID = ${randomSPID} <br> 
@@ -194,6 +197,7 @@ function createOne(){
         const randomPrice = randomInt(5,15);
         var rt = randomInt(3000,5000);
         const randomDate =hourSM(date+rt);
+        newOrder = new OrderObject(randomStore, randomSPID, randomCD, randomPrice, randomDate);
         let divOrderList = document.getElementById("divOrderList");
         divOrderList.innerHTML = `StoreID = ${randomStore} <br> 
         SalesPersonID = ${randomSPID} <br> 
@@ -209,6 +213,7 @@ function createOne(){
         const randomPrice = randomInt(5,15);
         var rt = randomInt(3000,5000);
         const randomDate =hourSM(date+rt);
+        newOrder = new OrderObject(randomStore, randomSPID, randomCD, randomPrice, randomDate);
         let divOrderList = document.getElementById("divOrderList");
         divOrderList.innerHTML = `StoreID = ${randomStore} <br> 
         SalesPersonID = ${randomSPID} <br> 
@@ -224,6 +229,7 @@ function createOne(){
         const randomPrice = randomInt(5,15);
         var rt = randomInt(3000,5000);
         const randomDate =hourSM(date+rt);
+        newOrder = new OrderObject(randomStore, randomSPID, randomCD, randomPrice, randomDate);
         let divOrderList = document.getElementById("divOrderList");
         divOrderList.innerHTML = `StoreID = ${randomStore} <br> 
         SalesPersonID = ${randomSPID} <br> 
